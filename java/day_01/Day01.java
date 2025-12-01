@@ -25,7 +25,7 @@ public class Day01 {
         List<Move> moves = new ArrayList<>();
 
         String fileName = "input_p1.txt";
-        
+
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
 
             String line;
@@ -57,36 +57,80 @@ public class Day01 {
         // moves.add(new Move('L', 99));
         // moves.add(new Move('R', 14));
         // moves.add(new Move('L', 82));
-    
-
 
         int pointer = 50;
-        int start = 0;
-        int last = 99;
         int count = 0;
 
         for (Move move : moves) {
-            System.out.println(move);
             int moveSteps = move.steps % 100;
-            if(move.direction == 'L'){
+            if (move.direction == 'L') {
                 pointer -= moveSteps;
-                if(pointer < 0){
+                if (pointer < 0) {
                     pointer += 100;
                 }
-            }else{
+            } else {
                 pointer += moveSteps;
                 if (pointer >= 100) {
                     pointer -= 100;
                 }
             }
-            System.out.println(pointer);
 
-            if(pointer == 100 || pointer == 0){
+            if (pointer == 100 || pointer == 0) {
                 count++;
             }
-            
+        }
+        System.out.println(count);
+        count = 0;
+        pointer = 50;
+
+        for (Move move : moves) {
+            int steps = move.steps;
+
+            if (move.direction == 'L') {
+                for (int i = 0; i < steps; i++) {
+                    pointer--;
+                    if (pointer < 0) {
+                        pointer = 99;
+                    }
+                    if (pointer == 0) {
+                        count++;
+                    }
+                }
+            } else {
+                for (int i = 0; i < steps; i++) {
+                    pointer++;
+                    if (pointer > 99) {
+                        pointer = 0;
+                    }
+                    if (pointer == 0) {
+                        count++;
+                    }
+                }
+            }
+        }
+
+        System.out.println(count);
+        count = 0;
+        pointer = 50;
+        // alternate way
+        for (Move move : moves) {
+            int steps = move.steps;
+            char dir = move.direction;
+
+            for (int i = 0; i < steps; i++) {
+                if (dir == 'L') {
+                    pointer = (pointer - 1 + 100) % 100;
+                } else {
+                    pointer = (pointer + 1) % 100;
+                }
+
+                if (pointer == 0) {
+                    count++;
+                }
+            }
 
         }
+
         System.out.println(count);
     }
 }
