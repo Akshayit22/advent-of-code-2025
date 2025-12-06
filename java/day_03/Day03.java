@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Day03 {
-    // part 2 from chat gpt , understood the concept
+    // part 2 
     private static long maxJoltageWithKDigits(String s, int k) {
         int n = s.length();
         int remove = n - k; // how many digits we must delete

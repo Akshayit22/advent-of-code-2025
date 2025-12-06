@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class Day06 {
     public static void main(String[] args) throws IOException {
-        Path path = Paths.get("sample.txt");
+        Path path = Paths.get("input_p6.txt");
 
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 
