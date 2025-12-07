@@ -30,13 +30,13 @@ public class Day07 {
             }
             grid[r] = row;
         }
-        System.out.println(rows + " " + cols);
+
+        // problem 1
         int count = 0;
 
-        for (int row = 0; row < rows-1; row++) {
-            
-            for (int col = 0; col < cols; col++) {
+        for (int row = 0; row < rows - 1; row++) {
 
+            for (int col = 0; col < cols; col++) {
 
                 if (grid[row][col] == 'S') {
                     grid[row + 1][col] = '|';
@@ -45,21 +45,71 @@ public class Day07 {
                     if (grid[row + 1][col] == '^') {
                         count++;
                         if (grid[row + 1][col - 1] == '.') {
-                            grid[row + 1][col-1] = '|';
-                            
+                            grid[row + 1][col - 1] = '|';
+
                         }
                         if (grid[row + 1][col + 1] == '.') {
                             grid[row + 1][col + 1] = '|';
                         }
-                    }else if(grid[row + 1][col] == '.'){
+                    } else if (grid[row + 1][col] == '.') {
                         grid[row + 1][col] = '|';
                     }
-                    
+
                 }
-                System.out.print(grid[row][col]);
+                //System.out.print(grid[row][col]);
+            }
+            //System.out.println();
+        }
+        System.out.println(count); // p1 = 1628
+
+        // problem 2
+        long timelines = countTimelines(grid);
+        System.out.println("total timelines: " + timelines);
+    }
+
+    private static long countTimelines(char[][] grid) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        long[][] ways = new long[rows][cols];
+        ways[0][((cols - 1) / 2)] = 1L;// start position S
+
+        long totalExit = 0L;
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                long w = ways[r][c];
+                if (w == 0L){
+                    System.err.print(ways[r][c]);
+                    continue;
+                }
+                // If we're on the last row, next step is outside the manifold
+                if (r == rows - 1) {
+                    totalExit += w;
+                    continue;
+                }
+
+                char below = grid[r + 1][c];
+
+                if (below == '.') {
+                    // Just move straight down
+                    ways[r + 1][c] += w;
+                } else if (below == '^') {
+                    // Splitter under us: each timeline branches into two
+
+                    // Left branch
+                    ways[r + 1][c - 1] += w;
+                    // Right branch
+                    ways[r + 1][c + 1] += w;
+                    
+                } else {
+                    ways[r + 1][c] += w;
+                }
+                System.err.print(ways[r][c]);
             }
             System.out.println();
         }
-        System.out.println(count); // p1 = 1628
+
+        return totalExit;
     }
 }
